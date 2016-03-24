@@ -63,14 +63,14 @@
 	};
 
 	var select2Defaults = {
-			placeholder: adminData.languages['select_options'],
-			formatNoMatches: function(term)
-			{
-				return adminData.languages['no_results'];
-			},
-			width: 'resolve',
-			allowClear: true
-		};
+		placeholder: adminData.languages['select_options'],
+		formatNoMatches: function(term)
+		{
+			return adminData.languages['no_results'];
+		},
+		width: 'resolve',
+		allowClear: true
+	};
 
 	//for select2
 	ko.bindingHandlers.select2 = {
@@ -86,6 +86,7 @@
 			}
 
 			//pull the latest from the list
+
 			if (defaults.data)
 			{
 				if ($.isFunction(defaults.data.results))
@@ -118,6 +119,18 @@
 						update: function() { $(element).select2("onSortEnd") }
 					});
 				}
+			}
+
+			if ($(element).val() && $(element).closest('.images').length > 0) {
+				//@hack
+				var vals = $(element).val().split(',');
+				$('#' + options.field + '_uploaded_files').html('<h3>Feltöltött fájlok</h3>');
+
+				$.each(vals, function(ind, el)
+				{
+					$('#' + options.field + '_uploaded_files').append('<div class="plupload-uploaded-file" data-field="' + options.field + '" data-file-name="' + el + '">' + el + ' <a href="#" class="uploaded-file-remove">x</div>');
+				});
+
 			}
 
 			//it's necessary to reorder the options array if the sort is set
@@ -182,12 +195,12 @@
 					data: function(term, page)
 					{
 						var data = {
-								term: term,
-								page: page,
-								field: options.field,
-								type: options.type,
-								constraints: {}
-							};
+							term: term,
+							page: page,
+							field: options.field,
+							type: options.type,
+							constraints: {}
+						};
 
 						if (data.type === 'edit')
 						{
@@ -275,6 +288,7 @@
 		if ($(element).data("select2") === undefined || $(element).data("select2") === null)
 		{
 			$(element).select2(defaults);
+			console.log(defaults);
 
 			//if the sort option is set, set up jquery ui sortable
 			if (options.sort)
@@ -634,7 +648,7 @@
 	/**
 	 * The markdown binding is attached to the field next a markdown textarea
 	 */
-	 ko.bindingHandlers.markdown = {
+	ko.bindingHandlers.markdown = {
 		update: function (element, valueAccessor, allBindingsAccessor, context)
 		{
 			//handle programmatic updates to the observable
@@ -649,7 +663,7 @@
 				$(element).html(markdown.toHTML(value.toString()));
 			}
 		}
-	 };
+	};
 
 	/**
 	 * The enumText binding converts a value and an options array to a "Label (value)" readable format
@@ -691,8 +705,10 @@
 				multi_selection: false,
 				max_file_size: options.size_limit + 'mb',
 				url: options.upload_url,
-				flash_swf_url: asset_url + 'js/plupload/js/plupload.flash.swf',
-				silverlight_xap_url: asset_url + 'js/plupload/js/plupload.silverlight.xap',
+				//flash_swf_url: asset_url + 'js/plupload/js/plupload.flash.swf',
+				flash_swf_url: asset_url + 'js/plupload/js/Moxie.swf',
+				//silverlight_xap_url: asset_url + 'js/plupload/js/plupload.silverlight.xap',
+				silverlight_xap_url: asset_url + 'js/plupload/js/Moxie.xap',
 				filters: filters,
 				multipart_params: {"_token" : window.csrf}
 			});
@@ -775,5 +791,124 @@
 			}, 200);
 		}
 	};
+
+
+	/**
+	 * Multiple file uploader using pluploadQueue
+	 */
+	ko.bindingHandlers.filemultiupload = {
+		init: function(element, valueAccessor, allBindingsAccessor, viewModel, context)
+		{
+			var options = valueAccessor(),
+				cacheName = options.field + '_uploader',
+				viewModel = context.$root,
+				filters = options.image ? [{title: 'Image files', extensions: 'jpg,jpeg,gif,png'}] : [];
+
+			setTimeout(function() {
+				viewModel[cacheName] = $('#' + options.field + '_uploader').pluploadQueue({
+					runtimes : 'html5,flash,silverlight,html4',
+					canOpenDialog: true,
+					flash_swf_url : asset_url + 'js/plupload/js/Moxie.swf',
+					silverlight_xap_url : asset_url + 'js/plupload/js/Moxie.xap',
+					url : options.upload_url,
+
+					filters : filters,
+
+					init: {
+						Init: function(up) {
+						},
+
+						BeforeUpload: function (up, file) {
+							up.settings.multipart_params = {"_token" : window.csrf};
+						},
+
+						PostInit: function(up) {
+							up.refresh();
+						},
+
+						FilesAdded: function(up, files) {
+
+						},
+
+						UploadProgress: function(up, file) {
+						},
+
+						Error: function(up, err) {
+							console.log('PLUPLOAD ERROR', err);
+						},
+
+						FileUploaded: function(up, file) {
+							$('#' + options.field + '_uploaded_files').append('<div class="plupload-uploaded-file" data-field="' + options.field + '" data-file-name="' + file.name + '">' + file.name + ' <a href="#" class="uploaded-file-remove">x</div>');
+							var vals = $('#edit_field_' + options.field + '').val().split(',');
+							vals.push(file.name);
+							$('#edit_field_' + options.field + '').val(vals.join(','));
+
+							setTimeout(function()
+							{
+								$('#edit_field_' + options.field + '').trigger('change');
+							}, 50);
+
+							if (up.files.length == (up.total.uploaded + up.total.failed)) {
+								console.log('Files uploaded');
+								//@see http://stackoverflow.com/questions/16690536/plupload-how-to-continue-to-upload-after-uploadcomplete
+							}
+						}
+					}
+				});
+
+			}, 0);
+
+			$('#' + cacheName).bind('dragenter', function(e)
+			{
+				$(this).addClass('drag');
+			});
+
+			$('#' + cacheName).bind('dragleave drop', function(e)
+			{
+				$(this).removeClass('drag');
+			});
+
+			//destroy the existing editor if the DOM node is removed
+			ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
+				viewModel[cacheName].pluploadQueue('destroy');
+			});
+		},
+		update: function(element, valueAccessor, allBindingsAccessor, viewModel, context)
+		{
+			var options = valueAccessor(),
+				cacheName = options.field + '_uploader',
+				viewModel = context.$root;
+
+			//hack to get the z-index properly set up
+			setTimeout(function()
+			{
+				$('div.plupload').css('z-index', 99999);
+				$('#edit_field_' + options.field).css('z-index', 99999);
+			}, 200);
+		}
+	};
+
+
+	$(document).on('click', '.uploaded-file-remove', function(e) {
+		var file = $(this).closest('.plupload-uploaded-file'); //fileName, field
+		var vals = $('#edit_field_' + file.data('field') + '').val().split(',');
+		var index = vals.indexOf(file.data('fileName'));
+
+		console.log(file.data(), $('#edit_field_' + file.data('field') + ''));
+
+		if (index > -1) {
+			vals.splice(index, 1);
+		}
+
+		$('#edit_field_' + file.data('field') + '').val(vals.join(','));
+
+		setTimeout(function()
+		{
+			$('#edit_field_' + file.data('field') + '').trigger('change');
+		}, 50);
+
+		e.preventDefault();
+		return false;
+	});
 
 })(jQuery);

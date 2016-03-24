@@ -150,6 +150,32 @@
 				<!-- /ko -->
 			<!-- /ko -->
 
+			<!-- ko if: type === 'images' -->
+				<!-- ko if: editable -->
+				<div class="upload_container" data-bind="attr: {id: field_id}">
+					<div class="uploader" data-bind="attr: {disabled: $root.freezeForm, id: field_name + '_uploader'}, value: $root.activeItem,
+												fileupload: {field: field_name, size_limit: size_limit, uploading: uploading, image: true,
+															upload_percentage: upload_percentage, upload_url: upload_url}">
+						<?php echo trans('administrator::administrator.uploadimage') ?></div>
+					<!-- ko if: uploading -->
+					<div class="uploading"
+						 data-bind="text: '<?php echo trans('administrator::administrator.imageuploading') ?>' + upload_percentage() + '%'"></div>
+					<!-- /ko -->
+				</div>
+				<!-- /ko -->
+				<!-- ko if: $root[field_name] -->
+				<div class="image_container">
+					<img data-bind="attr: {src: file_url + '?path=' + location + $root[field_name]()}" />
+					<!-- ko if: editable -->
+					<input type="button" class="remove_button" data-bind="click: function() {$root[field_name](null)}" value="x" />
+					<!-- /ko -->
+				</div>
+				<!-- /ko -->
+				<!-- ko if: !$root[field_name]() && !editable -->
+				<div class="uneditable" data-bind="text: '<?php echo trans('administrator::administrator.no_image_uploaded') ?>'"></div>
+				<!-- /ko -->
+			<!-- /ko -->
+
 			<!-- ko if: type === 'file' -->
 				<!-- ko if: editable -->
 					<div class="upload_container" data-bind="attr: {id: field_id}">

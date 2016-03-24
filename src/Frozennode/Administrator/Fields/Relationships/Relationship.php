@@ -179,6 +179,7 @@ abstract class Relationship extends Field {
 	 */
 	public function mapRelationshipOptions($items, $nameField, $keyField)
 	{
+		//@POI
 		$result = array();
 
 		foreach ($items as $option)

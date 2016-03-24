@@ -28,6 +28,7 @@ class Factory {
 		'bool' => 'Frozennode\\Administrator\\Fields\\Boolean',
 		'enum' => 'Frozennode\\Administrator\\Fields\\Enum',
 		'image' => 'Frozennode\\Administrator\\Fields\\Image',
+		'images' => 'Frozennode\\Administrator\\Fields\\Images',
 		'file' => 'Frozennode\\Administrator\\Fields\\File',
 		'color' => 'Frozennode\\Administrator\\Fields\\Color',
 

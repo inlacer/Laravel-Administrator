@@ -144,7 +144,7 @@ class Config extends ConfigBase implements ConfigInterface {
 		{
 			if ($field->getOption('relationship'))
 			{
-				$this->setModelRelationship($model, $field);
+				$this->setModelRelationship($model, $field); //@POI
 			}
 
 			//if this is a setter field, unset it
@@ -187,11 +187,18 @@ class Config extends ConfigBase implements ConfigInterface {
 			foreach ($relatedItems as $item)
 			{
 				$keyName = $item->getKeyName();
+				//var_dump($item->getTable());
 
 				//if this is a mutliple-value type (i.e. HasMany, BelongsToMany), make sure this is an array
 				if ($multipleValues)
 				{
-					$relationsArray[] = $item->{$keyName};
+					if ($item->getTable() == 'product_images') { //@todo configurable key key
+
+						$relationsArray[] = $item->path;
+					} else {
+						$relationsArray[] = $item->{$keyName};
+					}
+
 				}
 				else
 				{
@@ -201,7 +208,7 @@ class Config extends ConfigBase implements ConfigInterface {
 				//if this is an autocomplete field, we'll need to provide an array of arrays with 'id' and 'text' indexes
 				if ($autocomplete)
 				{
-					$autocompleteArray[$item->{$keyName}] = array('id' => $item->{$keyName}, 'text' => $item->{$nameField});
+					$autocompleteArray[$item->{$keyName}] = array('id' => $item->{$keyName}, 'text' => $item->{$nameField}); //@POI
 				}
 			}
 
@@ -212,7 +219,8 @@ class Config extends ConfigBase implements ConfigInterface {
 			}
 
 			//set the options attribute
-			$model->setAttribute($name.'_options', $options);
+
+			$model->setAttribute($name.'_options', $options); //@POI
 
 			//unset the relationships so we only get back what we need
 			$model->relationships = array();

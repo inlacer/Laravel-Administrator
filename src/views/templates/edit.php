@@ -232,6 +232,32 @@
 				<!-- /ko -->
 			<!-- /ko -->
 
+			<!-- ko if: type === 'images' -->
+				<!-- ko if: editable -->
+				<div class="upload_container" data-bind="attr: {id: field_id + '_container'}">
+
+					<div class="uploader" data-bind="attr: {disabled: $root.freezeForm, id: field_name + '_uploader'}, value: $root.activeItem,
+												filemultiupload: {field: field_name, size_limit: size_limit, uploading: uploading, image: true,
+															upload_percentage: upload_percentage, upload_url: upload_url}">
+						<?php echo trans('administrator::administrator.uploadimage') ?></div>
+
+					<div class="uploaded_files_container" data-bind="attr: {id: field_name + '_uploaded_files', value: $root[field_name]}">
+
+					</div>
+
+					<!-- ko if: loadingOptions -->
+					<div class="loader"></div>
+					<!-- /ko -->
+
+					<input type="hidden" data-bind="attr: {disabled: $root.freezeForm() || loadingOptions() || constraintLoading() || !editable,
+														id: field_id},
+													select2: {field: field_name, data:{results: $root.listOptions[field_name].concat([{id:'images/img.png',text:'n/a'}])}, multiple: true},
+													value: $root[field_name]" />
+				</div>
+				<!-- /ko -->
+
+			<!-- /ko -->
+
 			<!-- ko if: type === 'file' -->
 				<!-- ko if: editable -->
 					<div class="upload_container" data-bind="attr: {id: field_id}">

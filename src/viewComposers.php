@@ -82,6 +82,7 @@ View::composer(array('administrator::layouts.default'), function($view)
 			'jquery-ui-timepicker' => asset('packages/frozennode/administrator/css/ui/jquery.ui.timepicker.css'),
 			'select2' => asset('packages/frozennode/administrator/js/jquery/select2/select2.css'),
 			'jquery-colorpicker' => asset('packages/frozennode/administrator/css/jquery.lw-colorpicker.css'),
+			'plupload-queue' => asset('packages/frozennode/administrator/js/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css'),
 		);
 	}
 
@@ -100,7 +101,11 @@ View::composer(array('administrator::layouts.default'), function($view)
 			'ckeditor' => asset('packages/frozennode/administrator/js/ckeditor/ckeditor.js'),
 			'ckeditor-jquery' => asset('packages/frozennode/administrator/js/ckeditor/adapters/jquery.js'),
 			'markdown' => asset('packages/frozennode/administrator/js/markdown.js'),
-			'plupload' => asset('packages/frozennode/administrator/js/plupload/js/plupload.full.js'),
+			'plupload' => asset('packages/frozennode/administrator/js/plupload/js/plupload.full.min.js'),
+			'plupload-queue' => asset('packages/frozennode/administrator/js/plupload/js/jquery.plupload.queue/jquery.plupload.queue.min.js'),
+			//'plupload-moxie' => asset('packages/frozennode/administrator/js/plupload/js/moxie.js'),
+			//'plupload-dev' => asset('packages/frozennode/administrator/js/plupload/js/plupload.dev.js'),
+
 		);
 
 		//localization js assets
