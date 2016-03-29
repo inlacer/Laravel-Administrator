@@ -240,6 +240,8 @@ class Column {
 
 	/**
 	 * Takes a column output string and renders the column with it (replacing '(:value)' with the column's field value)
+     *
+     * @inlacer $value can contain any (:placeholder), it gets replaced by the entity's respective property, if exists
 	 *
 	 * @param $value string	$value
 	 * @param \Illuminate\Database\Eloquent\Model	$item
@@ -249,12 +251,24 @@ class Column {
 	public function renderOutput($value, $item = null)
 	{
 		$output = $this->getOption('output');
-		
+
 		if (is_callable($output)) {
 			return $output($value, $item);
 		}
-		
-		return str_replace('(:value)', $value, $output);
+
+		$output = str_replace(array('(:value)'), array($value), $output);
+
+		$output = preg_replace_callback('/\(\:(\w+)\)/', function($match) use ($item) {
+            $property = $match[1];
+
+            if (!empty($item->{$property})) {
+                return $item->{$property};
+            }
+
+			return '';
+		}, $output);
+
+		return $output;
 	}
 
 	/**
