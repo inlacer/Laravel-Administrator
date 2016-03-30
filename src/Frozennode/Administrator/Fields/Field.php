@@ -111,7 +111,7 @@ abstract class Field {
 		$options = $this->suppliedOptions;
 
 		//set the title if it doesn't exist
-		$options['title'] = $this->validator->arrayGet($options, 'title', $options['field_name']);
+		$options['title'] = admin_trans($this->validator->arrayGet($options, 'title', $options['field_name']));
 
 		//run the visible property closure if supplied
 		$visible = $this->validator->arrayGet($options, 'visible');

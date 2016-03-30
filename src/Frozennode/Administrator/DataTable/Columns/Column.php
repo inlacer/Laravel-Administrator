@@ -152,6 +152,7 @@ class Column {
 		$options['title'] = $this->validator->arrayGet($options, 'title', $options['column_name']);
 		$options['sort_field'] = $this->validator->arrayGet($options, 'sort_field', $options['column_name']);
 
+
 		//if the supplied item is an accessor, make this unsortable for the moment
 		if (method_exists($model, camel_case('get_'.$options['column_name'].'_attribute')) && $options['column_name'] === $options['sort_field'])
 		{
@@ -214,6 +215,8 @@ class Column {
 			$this->validateOptions();
 			$this->build();
 			$this->options = array_merge($this->getDefaults(), $this->suppliedOptions);
+
+			$this->options['title'] = admin_trans($this->options['title']);
 		}
 
 		return $this->options;
