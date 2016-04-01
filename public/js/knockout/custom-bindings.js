@@ -838,9 +838,11 @@
 						},
 
 						FileUploaded: function(up, file) {
+
 							$('#' + options.field + '_uploaded_files').append('<div class="plupload-uploaded-file" data-field="' + options.field + '" data-file-name="' + file.name + '">' + file.name + ' <a href="#" class="uploaded-file-remove">x</div>');
 							var vals = $('#edit_field_' + options.field + '').val().split(',');
 							vals.push(file.name);
+							vals = vals.filter(Boolean);
 							$('#edit_field_' + options.field + '').val(vals.join(','));
 
 							setTimeout(function()

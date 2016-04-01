@@ -182,6 +182,8 @@ class Images extends HasMany
         $deleteImages->delete();
 
         foreach ($input as $foreign_id) {
+            if (!$foreign_id) continue;
+
             $relatedObject = new $relatedObjectClass();
 
             $relatedObject->path = $foreign_id;
