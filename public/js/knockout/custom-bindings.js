@@ -697,70 +697,74 @@
 				viewModel = context.$root,
 				filters = options.image ? [{title: 'Image files', extensions: 'jpg,jpeg,gif,png'}] : [];
 
-			viewModel[cacheName] = new plupload.Uploader({
-				runtimes: 'html5,flash,silverlight,gears,browserplus',
-				browse_button: cacheName,
-				container: 'edit_field_' + options.field,
-				drop_element: cacheName,
-				multi_selection: false,
-				max_file_size: options.size_limit + 'mb',
-				url: options.upload_url,
-				//flash_swf_url: asset_url + 'js/plupload/js/plupload.flash.swf',
-				flash_swf_url: asset_url + 'js/plupload/js/Moxie.swf',
-				//silverlight_xap_url: asset_url + 'js/plupload/js/plupload.silverlight.xap',
-				silverlight_xap_url: asset_url + 'js/plupload/js/Moxie.xap',
-				filters: filters,
-				multipart_params: {"_token" : window.csrf}
-			});
+			setTimeout(function() {
+				console.log('browse button: ' + cacheName, $('#edit_field_' + options.field).length);
 
-			viewModel[cacheName].init();
-
-			viewModel[cacheName].bind('FilesAdded', function(up, files) {
-
-				viewModel.freezeActions(true);
-
-				$(files).each(function(i, file) {
-					//parent.uploader.removeFile(file);
-
+				viewModel[cacheName] = new plupload.Uploader({
+					runtimes: 'html5,flash,silverlight,gears,browserplus',
+					browse_button: cacheName,
+					container: 'edit_field_' + options.field,
+					drop_element: cacheName,
+					multi_selection: false,
+					max_file_size: options.size_limit + 'mb',
+					url: options.upload_url,
+					//flash_swf_url: asset_url + 'js/plupload/js/plupload.flash.swf',
+					flash_swf_url: asset_url + 'js/plupload/js/Moxie.swf',
+					//silverlight_xap_url: asset_url + 'js/plupload/js/plupload.silverlight.xap',
+					silverlight_xap_url: asset_url + 'js/plupload/js/Moxie.xap',
+					filters: filters,
+					multipart_params: {"_token" : window.csrf}
 				});
 
-				options.upload_percentage(0);
-				options.uploading(true);
+				viewModel[cacheName].init();
 
-				viewModel[cacheName].start();
-			});
+				viewModel[cacheName].bind('FilesAdded', function(up, files) {
 
-			viewModel[cacheName].bind('UploadProgress', function(up, file) {
-				options.upload_percentage(file.percent);
-			});
+					viewModel.freezeActions(true);
 
-			viewModel[cacheName].bind('Error', function(up, err) {
-				alert(err.message);
-			});
+					$(files).each(function(i, file) {
+						//parent.uploader.removeFile(file);
 
-			viewModel[cacheName].bind('FileUploaded', function(up, file, response) {
-				var data = JSON.parse(response.response);
+					});
 
-				options.uploading(false);
+					options.upload_percentage(0);
+					options.uploading(true);
 
-				if (data.errors.length === 0) {
-					//success
-					//iterate over the files until we find it and then set the proper fields
-					viewModel[options.field](data.filename);
-				} else {
-					//error
-					alert(data.errors);
-				}
+					viewModel[cacheName].start();
+				});
 
-				setTimeout(function()
-				{
-					viewModel[cacheName].splice();
-					viewModel[cacheName].refresh();
-					$('div.plupload').css('z-index', 71);
-					viewModel.freezeActions(false);
-					admin.resizePage();
-				}, 200);
-			});
+				viewModel[cacheName].bind('UploadProgress', function(up, file) {
+					options.upload_percentage(file.percent);
+				});
+
+				viewModel[cacheName].bind('Error', function(up, err) {
+					alert(err.message);
+				});
+
+				viewModel[cacheName].bind('FileUploaded', function(up, file, response) {
+					var data = JSON.parse(response.response);
+
+					options.uploading(false);
+
+					if (data.errors.length === 0) {
+						//success
+						//iterate over the files until we find it and then set the proper fields
+						viewModel[options.field](data.filename);
+					} else {
+						//error
+						alert(data.errors);
+					}
+
+					setTimeout(function()
+					{
+						viewModel[cacheName].splice();
+						viewModel[cacheName].refresh();
+						$('div.plupload').css('z-index', 71);
+						viewModel.freezeActions(false);
+						admin.resizePage();
+					}, 200);
+				});
+			}, 0);
 
 			$('#' + cacheName).bind('dragenter', function(e)
 			{
