@@ -827,6 +827,7 @@
 						},
 
 						PostInit: function(up) {
+							window.activeAdminPlupload = up;
 							up.refresh();
 						},
 
@@ -888,6 +889,10 @@
 			//hack to get the z-index properly set up
 			setTimeout(function()
 			{
+				if (window.activeAdminPlupload) {
+					window.activeAdminPlupload.refresh();
+				}
+
 				$('div.plupload').css('z-index', 99999);
 				$('#edit_field_' + options.field).css('z-index', 99999);
 			}, 200);
