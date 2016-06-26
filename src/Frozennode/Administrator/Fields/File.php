@@ -25,7 +25,7 @@ class File extends Field {
 	 */
 	protected $rules = array(
 		'location' => 'required|string|directory',
-		'naming' => 'in:keep,random',
+		'naming' => 'in:keep,random,sequential',
 		'length' => 'integer|min:0',
 		'mimes' => 'string',
 	);
