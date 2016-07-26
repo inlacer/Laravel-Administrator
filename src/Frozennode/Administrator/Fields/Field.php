@@ -271,6 +271,25 @@ abstract class Field {
 	}
 
 	/**
+	 * Checks if field has specific option
+	 *
+	 * @param string 	$key
+	 *
+	 * @return boolean
+	 */
+	public function hasOption($key)
+	{
+		$options = $this->getOptions();
+
+		if (!array_key_exists($key, $options))
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Gets all rules
 	 *
 	 * @return array

@@ -227,6 +227,17 @@ class DataTable {
 			{
 				//get the field object
 				$fieldObject = $this->fieldFactory->findFilter($filter['field_name']);
+				$fieldObject->getOptions();
+
+				if ($fieldObject->hasOption('callback') && is_callable($fieldObject->getOption('callback'))) {
+					$callback = $fieldObject->getOption('callback');
+
+					if (!empty($filter['value'])) {
+						$callback($query, $filter['value']);
+					}
+
+					continue;
+				}
 
 				//set the filter on the object
 				$fieldObject->setFilter($filter);
