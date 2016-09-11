@@ -688,21 +688,21 @@ a {
   font-size: 24px;
   line-height: 36px;
 }
-#wrapper textarea,
-#wrapper input[type="text"],
-#wrapper input[type="password"],
-#wrapper input[type="datetime"],
-#wrapper input[type="datetime-local"],
-#wrapper input[type="date"],
-#wrapper input[type="month"],
-#wrapper input[type="time"],
-#wrapper input[type="week"],
-#wrapper input[type="number"],
-#wrapper input[type="email"],
-#wrapper input[type="url"],
-#wrapper input[type="search"],
-#wrapper input[type="tel"],
-#wrapper input[type="color"] {
+#wrapper > :not(.bootstrap-iso) textarea,
+#wrapper > :not(.bootstrap-iso) input[type="text"],
+#wrapper > :not(.bootstrap-iso) input[type="password"],
+#wrapper > :not(.bootstrap-iso) input[type="datetime"],
+#wrapper > :not(.bootstrap-iso) input[type="datetime-local"],
+#wrapper > :not(.bootstrap-iso) input[type="date"],
+#wrapper > :not(.bootstrap-iso) input[type="month"],
+#wrapper > :not(.bootstrap-iso) input[type="time"],
+#wrapper > :not(.bootstrap-iso) input[type="week"],
+#wrapper > :not(.bootstrap-iso) input[type="number"],
+#wrapper > :not(.bootstrap-iso) input[type="email"],
+#wrapper > :not(.bootstrap-iso) input[type="url"],
+#wrapper > :not(.bootstrap-iso) input[type="search"],
+#wrapper > :not(.bootstrap-iso) input[type="tel"],
+#wrapper > :not(.bootstrap-iso) input[type="color"]  {
   display: inline-block;
   vertical-align: middle;
   height: 18px;
