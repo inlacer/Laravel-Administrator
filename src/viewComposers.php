@@ -136,6 +136,17 @@ View::composer(array('administrator::layouts.default'), function($view)
 			'admin' => admin_asset('packages/frozennode/administrator/js/admin.js'),
 			'settings' => admin_asset('packages/frozennode/administrator/js/settings.js'),
 		);
+	} else {
+		//load these on custom pages too
+		$view->js += array(
+			'select2' => admin_asset('packages/frozennode/administrator/js/jquery/select2/select2.js'),
+			'jquery-ui-timepicker' => admin_asset('packages/frozennode/administrator/js/jquery/jquery-ui-timepicker-addon.js'),
+			'ckeditor' => admin_asset('packages/frozennode/administrator/js/ckeditor/ckeditor.js'),
+			'ckeditor-jquery' => admin_asset('packages/frozennode/administrator/js/ckeditor/adapters/jquery.js'),
+			'markdown' => admin_asset('packages/frozennode/administrator/js/markdown.js'),
+			'plupload' => admin_asset('packages/frozennode/administrator/js/plupload/js/plupload.full.min.js'),
+			'plupload-queue' => admin_asset('packages/frozennode/administrator/js/plupload/js/jquery.plupload.queue/jquery.plupload.queue.min.js'),
+		);
 	}
 
 	$view->js += array('page' => admin_asset('packages/frozennode/administrator/js/page.js'));
