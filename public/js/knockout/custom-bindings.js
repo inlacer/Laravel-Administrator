@@ -842,11 +842,12 @@
 							console.log('PLUPLOAD ERROR', err);
 						},
 
-						FileUploaded: function(up, file) {
+						FileUploaded: function(up, file, response) {
+							var finalFilename = JSON.parse(response.response).filename;
 
-							$('#' + options.field + '_uploaded_files').append('<div class="plupload-uploaded-file" data-field="' + options.field + '" data-file-name="' + file.name + '">' + file.name + ' <a href="#" class="uploaded-file-remove">x</div>');
+							$('#' + options.field + '_uploaded_files').append('<div class="plupload-uploaded-file" data-field="' + options.field + '" data-file-name="' + finalFilename + '">' + finalFilename + ' <a href="#" class="uploaded-file-remove">x</div>');
 							var vals = $('#edit_field_' + options.field + '').val().split(',');
-							vals.push(file.name);
+							vals.push(finalFilename);
 							vals = vals.filter(Boolean);
 							$('#edit_field_' + options.field + '').val(vals.join(','));
 
