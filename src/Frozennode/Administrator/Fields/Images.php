@@ -83,7 +83,7 @@ class Images extends HasMany
 
         //Image
         'location' => 'required|string|directory',
-        'naming' => 'in:keep,random',
+        'naming' => 'in:keep,random,sequential',
         'length' => 'integer|min:0',
         'mimes' => 'string',
     );
@@ -95,12 +95,33 @@ class Images extends HasMany
      */
     public function doUpload()
     {
+        $changeOriginalFilename = in_array($this->getOption('naming'), ['random', 'sequential']);
+
         //use the multup library to perform the upload
-        $result = Multup::open('file', 'image|max:' . $this->getOption('size_limit') * 1000, $this->getOption('location'),
-            $this->getOption('naming') === 'random')
-            ->sizes($this->getOption('sizes'))
-            ->set_length($this->getOption('length'))
-            ->upload();
+        $multup = Multup::open('file', 'image|max:' . $this->getOption('size_limit') * 1000, $this->getOption('location'), $changeOriginalFilename);
+
+        if ($this->getOption('naming') === 'sequential') {
+            $multup->filename_callback(function($originalFilename) {
+                if (!file_exists($this->getOption('location') . $originalFilename)) {
+                    return $originalFilename;
+                }
+
+                $pathinfo = pathinfo($originalFilename);
+                $sequentializedFilename = '';
+                $index = 1;
+
+                do {
+                    $sequentializedFilename = $pathinfo['filename'] . '_' . $index . '.' . $pathinfo['extension'];
+                    $index++;
+                } while(file_exists($this->getOption('location') . $sequentializedFilename));
+
+                return $sequentializedFilename;
+            });
+        }
+
+        $result = $multup->sizes($this->getOption('sizes'))
+        ->set_length($this->getOption('length'))
+        ->upload();
 
         return $result[0];
     }
