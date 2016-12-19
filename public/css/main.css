@@ -1044,11 +1044,13 @@ a {
   display: block;
 }
 #wrapper header ul#menu,
-#wrapper header ul#lang_menu {
+#wrapper header ul#lang_menu,
+#wrapper header ul.addition-menu {
   display: inline-block;
 }
 #wrapper header ul#menu > li,
-#wrapper header ul#lang_menu > li {
+#wrapper header ul#lang_menu > li,
+#wrapper header ul.addition-menu > li {
   display: inline-block;
   position: relative;
   background: #5a6064;
@@ -1079,12 +1081,15 @@ a {
 }
 #wrapper header ul#menu > li a,
 #wrapper header ul#lang_menu > li a,
+#wrapper header ul.addition-menu > li a,
 #wrapper header ul#menu > li span,
-#wrapper header ul#lang_menu > li span {
+#wrapper header ul#lang_menu > li span,
+#wrapper header ul.addition-menu > li span {
   padding: 9px 12px 8px;
 }
 #wrapper header ul#menu > li ul,
-#wrapper header ul#lang_menu > li ul {
+#wrapper header ul#lang_menu > li ul,
+#wrapper header ul.addition-menu > li ul {
   position: absolute;
   top: 35px;
   left: 0;
@@ -1125,26 +1130,31 @@ a {
   background-clip: padding-box;
 }
 #wrapper header ul#menu > li ul a,
-#wrapper header ul#lang_menu > li ul a {
+#wrapper header ul#lang_menu > li ul a,
+#wrapper header ul.addition-menu > li ul a {
   display: block;
   white-space: nowrap;
   overflow: hidden;
   border-bottom: 1px solid #666;
 }
 #wrapper header ul#menu > li ul a:hover,
-#wrapper header ul#lang_menu > li ul a:hover {
+#wrapper header ul#lang_menu > li ul a:hover,
+#wrapper header ul.addition-menu > li ul a:hover {
   color: #fff;
 }
 #wrapper header ul#menu > li ul li:last-child a,
-#wrapper header ul#lang_menu > li ul li:last-child a {
+#wrapper header ul#lang_menu > li ul li:last-child a,
+#wrapper header ul.addition-menu > li ul li:last-child a {
   border-bottom: none;
 }
 #wrapper header ul#menu > li ul li.menu,
-#wrapper header ul#lang_menu > li ul li.menu {
+#wrapper header ul#lang_menu > li ul li.menu,
+#wrapper header ul.addition-menu > li ul li.menu {
   position: relative;
 }
 #wrapper header ul#menu > li ul li.menu.current,
-#wrapper header ul#lang_menu > li ul li.menu.current {
+#wrapper header ul#lang_menu > li ul li.menu.current,
+#wrapper header ul.addition-menu > li ul li.menu.current {
   background: #333333;
   /* Old browsers */
 
@@ -1171,15 +1181,18 @@ a {
   filter: progid:dximagetransform.microsoft.gradient(startColorstr='#818181', endColorstr='#646464', GradientType=0);
 }
 #wrapper header ul#menu > li ul li.menu ul,
-#wrapper header ul#lang_menu > li ul li.menu ul {
+#wrapper header ul#lang_menu > li ul li.menu ul,
+#wrapper header ul.addition-menu > li ul li.menu ul {
   top: 0;
   left: 100%;
   z-index: -1;
 }
 #wrapper header ul#menu > li.current,
 #wrapper header ul#lang_menu > li.current,
+#wrapper header ul.addition-menu > li.current,
 #wrapper header ul#menu > li:hover,
-#wrapper header ul#lang_menu > li:hover {
+#wrapper header ul#lang_menu > li:hover,
+#wrapper header ul.addition-menu > li:hover {
   background: #444444;
   /* Old browsers */
 
@@ -1206,7 +1219,8 @@ a {
   filter: progid:dximagetransform.microsoft.gradient(startColorstr='#818181', endColorstr='#646464', GradientType=0);
 }
 #wrapper header ul#menu > li:first-child,
-#wrapper header ul#lang_menu > li:first-child {
+#wrapper header ul#lang_menu > li:first-child,
+#wrapper header ul.addition-menu > li:first-child {
   margin-left: 0;
 }
 #wrapper header div#right_nav {
@@ -1215,7 +1229,8 @@ a {
   top: 0;
   right: 0;
 }
-#wrapper header div#right_nav ul#lang_menu {
+#wrapper header div#right_nav ul#lang_menu,
+#wrapper header div#right_nav ul.addition-menu{
   display: inline-block;
   border-right: 1px solid #999999;
 }

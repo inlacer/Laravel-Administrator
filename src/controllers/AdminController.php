@@ -50,6 +50,11 @@ class AdminController extends Controller {
 			$this->layout->page = false;
 			$this->layout->dashboard = false;
 		}
+
+		if ($locale = session()->get('administrator_locale'))
+		{
+			app()->setLocale($locale);
+		}
 	}
 
 	/**
@@ -86,10 +91,11 @@ class AdminController extends Controller {
 			//try to get the object
 			$model = $config->getModel($itemId, $fields, $columnFactory->getIncludedColumns($fields));
 
-			if ($model->exists)
+			/*if ($model->exists)
 			{
 				$model = $config->updateModel($model, $fieldFactory, $actionFactory);
-			}
+			}*/
+			$model = $config->updateModel($model, $fieldFactory, $actionFactory);
 
 			$response = $actionPermissions['view'] ? response()->json($model) : response()->json(array(
 				'success' => false,

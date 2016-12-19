@@ -93,6 +93,7 @@ View::composer(array('administrator::layouts.default'), function($view)
 	);
 
 	$view->css += array('bootstrap-iso' => admin_asset('packages/frozennode/administrator/css/bootstrap-iso.css'));
+	$view->css += array('select2' => admin_asset('packages/frozennode/administrator/js/jquery/select2/select2.css'));
 
 	//add the non-custom-page js assets
 	if (!$view->page && !$view->dashboard)

@@ -568,7 +568,8 @@
 			{
 				$element.ckeditor({
 					language : language,
-					readOnly : !adminData.edit_fields[context.field_name].editable
+					readOnly : !adminData.edit_fields[context.field_name].editable,
+					extraAllowedContent: '*{*}'
 				});
 
 				editor = $element.ckeditorGet();
